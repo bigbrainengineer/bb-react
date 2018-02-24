@@ -1,18 +1,20 @@
-export const SEARCH = 'search/SEARCH';
-export const SEARCH_CHANGE = 'search/SEARCH_CHANGE';
-export const SEARCH_REQUESTED = 'search/SEARCH_REQUESTED';
+export const SEARCH = 'main/SEARCH';
+export const SEARCH_CHANGE = 'main/SEARCH_CHANGE';
+export const SEARCH_REQUESTED = 'main/SEARCH_REQUESTED';
 
 const initialState = {
-    searchText : '',
-    playList: [],
-    showLoader: false
+    search: {
+        searchText : '',
+        searchResult: [],
+        showLoader: false
+    }
 }
 
 const playList = [
-    {id: 1, value: 'Playlist 1'},
-    {id: 2, value: 'Playlist 2'},
-    {id: 3, value: 'Playlist 3'},
-    {id: 4, value: 'Playlist 4'}
+    {id: 1, src: 'https://www.youtube.com/embed/Cy0ABjAP0TI'},
+    {id: 2, src: 'https://www.youtube.com/embed/_FrOQC-zEog'},
+    {id: 3, src: 'https://www.youtube.com/embed/ojf18wT_Xtk'},
+    {id: 4, src: 'https://www.youtube.com/embed/yjoPWxmOCtc'}
 ]
 
 export default (state = initialState, action) => {
@@ -20,13 +22,19 @@ export default (state = initialState, action) => {
         case SEARCH_REQUESTED:
             return {
                 ...state,
-                showLoader: true
+                search: {
+                    ...state.search,
+                    showLoader: true
+                }
             }
         case SEARCH:
             return {
                 ...state,
-                playList: playList,
-                showLoader: false
+                search: {
+                    ...state.search,
+                    searchResult: playList,
+                    showLoader: false
+                }
             }
         case SEARCH_CHANGE:
             return {
