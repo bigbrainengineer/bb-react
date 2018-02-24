@@ -7,6 +7,8 @@ import App from './containers/app'
 
 import 'sanitize.css/sanitize.css'
 import './index.css'
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
 
 const target = document.querySelector('#root')
 
