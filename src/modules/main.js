@@ -55,22 +55,28 @@ export const searchAsync = (searchText) => {
             type: SEARCH_REQUESTED
         });
         let finalURL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet,id&q=${searchText}&maxResults=${YOUTUBE_VIDEOS_LIMIT}`
-        return fetch(finalURL)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                const results = responseJson.items.map(obj => "https://www.youtube.com/embed/"+obj.id.videoId);
-                dispatch({
-                    type: SEARCH,
-                    results: results.map((url, index) => ({
-                        id: index,
-                        src: url
-                    }))
+        if (searchText) {
+            return fetch(finalURL)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    const results = responseJson.items.map(obj => "https://www.youtube.com/embed/"+obj.id.videoId);
+                    dispatch({
+                        type: SEARCH,
+                        results: results.map((url, index) => ({
+                            id: index,
+                            src: url
+                        }))
+                    });
+                })
+                .catch((error) => {
+                    //@todo implemet some logic here
+                    //console.error(error);
                 });
-            })
-            .catch((error) => {
-                //@todo implemet some logic here
-                //console.error(error);
-            });
+        }
+        dispatch({
+            type: SEARCH,
+            results: []
+        });
     }
 }
 

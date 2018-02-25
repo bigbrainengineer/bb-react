@@ -4,6 +4,7 @@ export default props => (
     <div>
         <input type="text" value={props.searchText} onChange={props.updateSearchText}/>
         <button onClick={()=>props.searchAsync(props.searchText)}>search</button>
+        {props.showLoader ? <div>loading...</div> : null }
         <div>
             {
                 <ul>{props.searchResult.map(({id, src}) =>
