@@ -16,6 +16,7 @@ const mapStateToProps = state => {
     return ({
         searchResult: state.main.search.searchResult,
         showLoader: state.main.search.showLoader,
+        searchText: state.main.search.searchText,
     });
 }
 
