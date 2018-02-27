@@ -3,8 +3,23 @@ import React from 'react';
 export default props => (
   <div className="container">
     <div className="row">
-      <input type="text" value={props.text} onChange={props.updateSearchText}/>
-      <button onClick={() => props.searchAsync(props.text)}>search</button>
+      <div className="input-group mb-3">
+        <input type="text"
+               className="form-control"
+               placeholder="Search in youtube"
+               aria-label="Search in youtube"
+               aria-describedby="basic-addon2"
+               value={props.text}
+               onChange={props.updateSearchText} />
+        <div className="input-group-append">
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={() => props.searchAsync(props.text)}>
+            Search
+          </button>
+        </div>
+      </div>
     </div>
     {props.showLoader ?
       <div className="row">loading...</div> :
