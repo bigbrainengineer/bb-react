@@ -3,29 +3,30 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Search from './search';
 import {
-    searchAsync,
-    updateSearchText
-} from '../../modules/main'
+  searchAsync,
+  updateSearchText,
+} from '../../modules/main';
 
 
 const Main = props => (
-    <Search {...props}/>
+  <Search {...props} />
 );
 
 const mapStateToProps = state => {
-    return ({
-        searchResult: state.main.search.searchResult,
-        showLoader: state.main.search.showLoader,
-    });
+  return ({
+    videos: state.main.search.videos,
+    showLoader: state.main.search.showLoader,
+    searchText: state.main.search.searchText,
+  });
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    searchAsync,
-    updateSearchText,
+  searchAsync,
+  updateSearchText,
 }, dispatch);
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Main)
+  mapStateToProps,
+  mapDispatchToProps,
+)(Main);
 
