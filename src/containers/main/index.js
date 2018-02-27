@@ -12,11 +12,12 @@ const Main = props => (
   <Search {...props} />
 );
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return ({
     videos: state.main.search.videos,
+    video: state.main.search.video,
     showLoader: state.main.search.showLoader,
-    searchText: state.main.search.searchText,
+    text: state.main.search.text,
   });
 }
 

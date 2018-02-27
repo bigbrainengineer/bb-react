@@ -4,12 +4,13 @@ export const SEARCH = 'main/SEARCH';
 export const SEARCH_CHANGE = 'main/SEARCH_CHANGE';
 export const SEARCH_REQUESTED = 'main/SEARCH_REQUESTED';
 export const YOUTUBE_API_KEY = 'AIzaSyA4w7kvBhINrYAmuZbYb6oxC9BknMU393Q';
-export const YOUTUBE_VIDEOS_LIMIT = 1;
+export const YOUTUBE_VIDEOS_LIMIT = 3;
 
 const initialState = {
   search: {
-    searchText: '',
+    text: '',
     videos: [],
+    video: null,
     showLoader: false,
   },
 }
@@ -26,11 +27,13 @@ export default (state = initialState, action) => {
         },
       }
     case SEARCH:
+      console.log(action.results)
       return {
         ...state,
         search: {
           ...state.search,
           videos: action.results,
+          video: action.results[0],
           showLoader: false,
         },
       }
@@ -39,7 +42,7 @@ export default (state = initialState, action) => {
         ...state,
         search: {
           ...state.search,
-          searchText: action.text,
+          text: action.text,
         },
       }
 
@@ -49,24 +52,32 @@ export default (state = initialState, action) => {
 }
 
 
-export const searchAsync = (searchText) => {
+export const searchAsync = (text) => {
   return dispatch => {
     dispatch({
       type: SEARCH_REQUESTED,
     });
     const URL_START = 'https://www.googleapis.com/youtube/v3/search?key';
-    const finalURL = `${URL_START}=${YOUTUBE_API_KEY}&part=snippet,id&q=${searchText}&maxResults=${YOUTUBE_VIDEOS_LIMIT}`;
-    if (searchText) {
+    const finalURL = `${URL_START}=${YOUTUBE_API_KEY}&part=snippet,id&q=${text}&type=video&maxResults=${YOUTUBE_VIDEOS_LIMIT}`;
+    if (text) {
       return fetch(finalURL)
         .then((response) => response.json())
         .then((responseJson) => {
-          const results = responseJson.items.map(obj => "https://www.youtube.com/embed/" + obj.id.videoId);
+          const results = responseJson.items.map((obj, index) => (
+            {
+              id: index,
+              src: "https://www.youtube.com/embed/" + obj.id.videoId,
+              title: obj.snippet.title,
+              publishedAt: obj.snippet.publishedAt,
+              description: obj.snippet.description,
+              channelTitle: obj.snippet.channelTitle,
+              channelId: obj.snippet.channelId,
+              img: obj.snippet.thumbnails.default,
+            }
+          ));
           dispatch({
             type: SEARCH,
-            results: results.map((url, index) => ({
-              id: index,
-              src: url,
-            })),
+            results: results,
           });
         })
         .catch((error) => {
