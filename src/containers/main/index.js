@@ -5,6 +5,7 @@ import Search from './search';
 import {
   searchAsync,
   updateSearchText,
+  loadVideo,
 } from '../../modules/main';
 
 
@@ -24,6 +25,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   searchAsync,
   updateSearchText,
+  loadVideo,
 }, dispatch);
 
 export default connect(

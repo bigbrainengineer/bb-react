@@ -35,6 +35,7 @@ export default props => (
                         alt={video.img.url}
                         width={video.img.width}
                         height={video.img.height}
+                        onClick={() => props.loadVideo(video)}
                       />
                     </div>
                     <div className="col">
