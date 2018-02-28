@@ -1,12 +1,11 @@
 import fetch from 'isomorphic-fetch';
 
-export const SEARCH = 'main/SEARCH';
+export const SEARCH_SUCCESS = 'main/SEARCH_SUCCESS';
 export const SEARCH_CHANGE = 'main/SEARCH_CHANGE';
 export const SEARCH_REQUESTED = 'main/SEARCH_REQUESTED';
-export const LOAD_VIDEO_REQUESTED = 'main/LOAD_VIDEO_REQUESTED';
-export const LOAD_VIDEO = 'main/LOAD_VIDEO';
+export const LOAD_VIDEO_SUCCESS = 'main/LOAD_VIDEO_SUCCESS';
 export const YOUTUBE_API_KEY = 'AIzaSyA4w7kvBhINrYAmuZbYb6oxC9BknMU393Q';
-export const YOUTUBE_VIDEOS_LIMIT = 10;
+export const YOUTUBE_VIDEOS_LIMIT = 20;
 
 const initialState = {
   search: {
@@ -28,7 +27,7 @@ export default (state = initialState, action) => {
           showLoader: true,
         },
       }
-    case SEARCH:
+    case SEARCH_SUCCESS:
       return {
         ...state,
         search: {
@@ -46,15 +45,7 @@ export default (state = initialState, action) => {
           text: action.text,
         },
       }
-    case LOAD_VIDEO_REQUESTED:
-      return {
-        ...state,
-        search: {
-          ...state.search,
-          showLoader: true,
-        },
-      }
-    case LOAD_VIDEO:
+    case LOAD_VIDEO_SUCCESS:
       return {
         ...state,
         search: {
@@ -69,32 +60,39 @@ export default (state = initialState, action) => {
   }
 };
 
+export const callYoutubeApi = (text) => {
+  const URL_START = 'https://www.googleapis.com/youtube/v3/search?key';
+  const finalURL = `${URL_START}=${YOUTUBE_API_KEY}&part=snippet,id&q=${text}&type=video&maxResults=${YOUTUBE_VIDEOS_LIMIT}`;
+  return fetch(finalURL);
+};
+
+export const getVideos = (responseJson) => {
+  return responseJson.items.map(obj => (
+    {
+      id: obj.id.videoId,
+      src: "https://www.youtube.com/embed/" + obj.id.videoId,
+      title: obj.snippet.title,
+      publishedAt: obj.snippet.publishedAt,
+      description: obj.snippet.description,
+      channelTitle: obj.snippet.channelTitle,
+      channelId: obj.snippet.channelId,
+      img: obj.snippet.thumbnails.default,
+    }
+  ));
+};
 
 export const searchAsync = (text) => {
   return dispatch => {
     dispatch({
       type: SEARCH_REQUESTED,
     });
-    const URL_START = 'https://www.googleapis.com/youtube/v3/search?key';
-    const finalURL = `${URL_START}=${YOUTUBE_API_KEY}&part=snippet,id&q=${text}&type=video&maxResults=${YOUTUBE_VIDEOS_LIMIT}`;
     if (text) {
-      return fetch(finalURL)
+      callYoutubeApi(text)
         .then((response) => response.json())
         .then((responseJson) => {
-          const results = responseJson.items.map(obj => (
-            {
-              id: obj.id.videoId,
-              src: "https://www.youtube.com/embed/" + obj.id.videoId,
-              title: obj.snippet.title,
-              publishedAt: obj.snippet.publishedAt,
-              description: obj.snippet.description,
-              channelTitle: obj.snippet.channelTitle,
-              channelId: obj.snippet.channelId,
-              img: obj.snippet.thumbnails.default,
-            }
-          ));
+          const results = getVideos(responseJson);
           dispatch({
-            type: SEARCH,
+            type: SEARCH_SUCCESS,
             results: results,
           });
         })
@@ -104,7 +102,7 @@ export const searchAsync = (text) => {
         });
     }
     dispatch({
-      type: SEARCH,
+      type: SEARCH_SUCCESS,
       results: [],
     });
   };
@@ -122,11 +120,28 @@ export const updateSearchText = (e) => {
 export const loadVideo = (video) => {
   return dispatch => {
     dispatch({
-      type: LOAD_VIDEO_REQUESTED,
-    });
-    dispatch({
-      type: LOAD_VIDEO,
+      type: LOAD_VIDEO_SUCCESS,
       video: video,
     });
+  };
+}
+
+export const callSearchAsync = (event) => {
+  return dispatch => {
+    if (event.key === 'Enter') {
+      callYoutubeApi(event.target.value)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          const results = getVideos(responseJson);
+          dispatch({
+            type: SEARCH_SUCCESS,
+            results: results,
+          });
+        })
+        .catch((error) => {
+          //@todo implemet some logic here
+          //console.error(error);
+        });
+    }
   };
 }

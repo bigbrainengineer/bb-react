@@ -4,13 +4,16 @@ export default props => (
   <div className="col-8 offset-2">
     <div className="row">
       <div className="input-group mb-3 col-9 mt-3">
-        <input type="text"
-               className="form-control"
-               placeholder="Search in youtube"
-               aria-label="Search in youtube"
-               aria-describedby="basic-addon2"
-               value={props.text}
-               onChange={props.updateSearchText} />
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search in youtube"
+          aria-label="Search in youtube"
+          aria-describedby="basic-addon2"
+          value={props.text}
+          onChange={props.updateSearchText}
+          onKeyPress={props.callSearchAsync}
+        />
         <div className="input-group-append">
           <button
             className="btn btn-outline-secondary"
@@ -33,37 +36,37 @@ export default props => (
             </div>
             <div className="row">
               <div className="col">
-                {props.video.title}
-              </div> 
+                <b>{props.video.title}</b>
+              </div>
             </div>
             <div className="row">
               <div className="col">
                 {props.video.description}
-              </div> 
+              </div>
             </div>
           </div>
           <div className="col-3">
             {
-              props.videos.map(
-                (video, id) =>
-                  <div
-                    className="row mb-3"
-                    key={id}
-                  >
-                    <div className="col">
-                      <img
-                      className="row"
-                        src={video.img.url}
-                        alt={video.img.url}
-                        width='160'
-                        height='115'
-                        onClick={() => props.loadVideo(video)}
-                      />
-                    </div>
-                    <div className="col">
-                      {video.title}
-                    </div>
+              props.videos.map
+              ((video, id) =>
+                <div
+                  className="row mb-3"
+                  key={id}
+                >
+                  <div className="col">
+                    <img
+                    className="row"
+                      src={video.img.url}
+                      alt={video.img.url}
+                      width='160'
+                      height='115'
+                      onClick={() => props.loadVideo(video)}
+                    />
                   </div>
+                  <div className="col">
+                    {video.title}
+                  </div>
+                </div>
               )
             }
           </div>
