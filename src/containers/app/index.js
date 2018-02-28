@@ -37,9 +37,10 @@ const App = (props) => {
       <main className="container">
         <Route exact path="/" component={Home} />
         <Route exact path="/about-us" component={About} />
-        <Route exact path="/search" component={Search} />
+        
         {/* <Route exact path="/login" component={Search}/> */}
       </main>
+      <div><Route exact path="/search" component={Search} /></div>
     </div>
   );
 };

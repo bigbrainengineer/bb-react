@@ -1,9 +1,10 @@
 import React from 'react';
+import './main.css';
 
 export default props => (
-  <div className="container">
+  <div className="col-8 offset-2">
     <div className="row">
-      <div className="input-group mb-3">
+      <div className="input-group mb-3 col-9 mt-3">
         <input type="text"
                className="form-control"
                placeholder="Search in youtube"
@@ -22,34 +23,41 @@ export default props => (
       </div>
     </div>
     {props.showLoader ?
-      <div className="row">loading...</div> :
+      <div className="row">
+        <div className="col-9">loading...</div>
+      </div> :
       props.video ?
         <div className="row">
-          <div className="col-10">
-            <div className="row">
-              <iframe title="video_yt" src={props.video.src} width="900" height="500" />
+          <div className="col-9">
+            <div className="">
+              <iframe title="video_yt" src={props.video.src} width="100%" height="500" />
             </div>
             <div className="row">
-              {props.video.title}
+              <div className="col">
+                {props.video.title}
+              </div> 
             </div>
             <div className="row">
-              {props.video.description}
+              <div className="col">
+                {props.video.description}
+              </div> 
             </div>
           </div>
-          <div className="col-2">
+          <div className="col-3">
             {
               props.videos.map(
                 (video, id) =>
                   <div
-                    className="row"
+                    className="row mb-3"
                     key={id}
                   >
                     <div className="col">
                       <img
+                      className="row"
                         src={video.img.url}
                         alt={video.img.url}
-                        width={video.img.width}
-                        height={video.img.height}
+                        width='160'
+                        height='115'
                         onClick={() => props.loadVideo(video)}
                       />
                     </div>
