@@ -1,5 +1,4 @@
 import React from 'react';
-import './main.css';
 
 export default props => (
   <div className="col-8 offset-2">
