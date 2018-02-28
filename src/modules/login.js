@@ -1,54 +1,69 @@
-export const IS_LOGIN_PAGE_REQUESTED = 'login/IS_LOGIN_PAGE_REQUESTED';
-export const IS_LOGIN_PAGE = 'login/IS_LOGIN_PAGE';
-export const IS_FORGOT_PAGE_REQUESTED = 'login/IS_FORGOT_PAGE_REQUESTED';
-export const IS_FORGOT_PAGE = 'login/IS_FORGOT_PAGE';
+export const TOGGLE_FORGOT_PAGE = 'login/TOGGLE_FORGOT_PAGE';
+export const FILL_INPUT_REQUESTED = 'login/FILL_INPUT_REQUESTED';
+export const FILL_PASSWORD_REQUESTED = 'login/FILL_PASSWORD_REQUESTED';
+export const LOGIN_FORM_SUBMITTED = 'login/LOGIN_FORM_SUBMITTED';
 
 const initialState = {
-  IS_LOGIN_PAGE: true,
-  IS_FORGOT_PAGE: false,
+  isLoginPage: true,
+  email: '',
+  password: '',
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case IS_LOGIN_PAGE:
+    case TOGGLE_FORGOT_PAGE:
       return {
         ...state,
-        IS_LOGIN_PAGE: true,
+        isLoginPage: !state.isLoginPage,
       };
-
-    case IS_FORGOT_PAGE:
+    case FILL_INPUT_REQUESTED:
       return {
         ...state,
-        IS_FORGOT_PAGE: true,
+        email: action.text,
       };
+    case FILL_PASSWORD_REQUESTED:
+      return {
+        ...state,
+        password: action.text,
+      };
+    case LOGIN_FORM_SUBMITTED:
+      return {
+        ...state,
+      }
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-export const isLoginPage = () => {
+export const toggleLoginForgotPage = () => (dispatch) => {
+  dispatch({
+    type: TOGGLE_FORGOT_PAGE,
+  });
+};
+
+export const fillEmailText = (e) => {
   return dispatch => {
     dispatch({
-      type: IS_LOGIN_PAGE_REQUESTED
-    })
+      type: FILL_INPUT_REQUESTED,
+      text: e.target.value,
+    });
+  };
+};
 
-    dispatch({
-      type: IS_LOGIN_PAGE
-    })
-  }
-}
-
-export const isForgotPage = () => {
+export const fillPasswordText = (e) => {
   return dispatch => {
     dispatch({
-      type: IS_FORGOT_PAGE_REQUESTED
-    })
+      type: FILL_PASSWORD_REQUESTED,
+      text: e.target.value,
+    });
+  };
+};
 
+export const postLoginFormData = (email, password) => {
+  return dispatch => {
     dispatch({
-      type: IS_FORGOT_PAGE
-    })
-  }
+      type: LOGIN_FORM_SUBMITTED,
+    });
+  };
 }
-
-

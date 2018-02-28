@@ -24,7 +24,7 @@ const Home = props => (
       <button onClick={props.decrementAsync} disabled={props.isDecrementing}>Decrement Async</button>
     </p>
 
-    <p><button className={"btn btn-default"} onClick={() => props.changePage()}>Go to about page via redux</button></p>
+    <p><button className={"btn btn-success"} onClick={() => props.changePage()}>Go to about page via redux</button></p>
   </div>
 )
 

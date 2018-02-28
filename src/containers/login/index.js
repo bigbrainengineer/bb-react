@@ -1,50 +1,105 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import './index.css';
-import {isForgotPage, isLoginPage} from "../../modules/login";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
+import { toggleLoginForgotPage, fillEmailText, fillPasswordText, postLoginFormData } from '../../modules/login';
 
-export class Login extends React.Component {
-  render() {
-    return (
-      <div className="col-sm-12">
-        { isLoginPage ? (
-          <div className="login-form">
-            <form>
-              <h2 className="text-center">Sign In</h2>
-              <div className="form-group">
-                <input type="text" className="form-control" placeholder="Username" required="required"/>
-              </div>
-              <div className="form-group">
-                <input type="password" className="form-control" placeholder="Password" required="required"/>
-              </div>
-              <div className="form-group">
-                <button type="submit" className="btn btn-primary btn-block">Log in</button>
-              </div>
-              <div className="clearfix">
-                <label className="pull-left checkbox-inline"><input type="checkbox"/> Remember me</label>
-                <a onClick={isForgotPage} className="pull-right">Forgot Password?</a>
-              </div>
-            </form>
-            <p className="text-center"><a href="#">Create an Account</a></p>
-          </div>) : (
-            <span>aslikov</span>
+const Login = props => (
+  <div className="col-sm-12">
+    { props.isLoginPage ? (// login page
+      <div className="login-form">
+        <form>
+          <h2 className="text-center">Sign In</h2>
+          <div className="form-group">
+            <input
+              onChange={props.fillEmailText}
+              type="text"
+              className="form-control"
+              placeholder="Username"
+              required="required"
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="password"
+              onChange={props.fillPasswordText}
+              className="form-control"
+              placeholder="Password"
+              required="required"
+            />
+          </div>
+          <div className="form-group">
+            <button
+              type="button"
+              onClick={() => props.postLoginFormData(props.email, props.password)}
+              className="btn btn-primary btn-block"
+            >Log in
+            </button>
+          </div>
+          <div className="clearfix">
+            <button type="button" onClick={props.toggleLoginForgotPage} className="pull-right btn btn-link">Forgot Password?</button>
+          </div>
+        </form>
+        <p className="text-center"><a href="#">Create an Account</a></p>
+      </div>) : ( //  forgot page
+        <div className="login-form">
+          <form>
+            <h2 className="text-center">Forgot Password</h2>
+            <div className="form-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Username or Email"
+                required="required"
+              />
+            </div>
+            <div className="form-group">
+              <button
+                type="button"
+                className="btn btn-primary btn-block"
+              >Recover My Password
+              </button>
+            </div>
+            <div className="clearfix">
+              <button type="button" onClick={props.toggleLoginForgotPage} className="pull-right btn btn-link">Go Back</button>
+            </div>
+          </form>
+        </div>
         )
         }
-      </div>
-    );
-  }
-}
+  </div>
+);
+
+Login.propTypes = {
+  isLoginPage: PropTypes.bool.isRequired,
+  toggleLoginForgotPage: PropTypes.func.isRequired,
+  fillEmailText: PropTypes.func.isRequired,
+  fillPasswordText: PropTypes.func.isRequired,
+  postLoginFormData: PropTypes.func.isRequired,
+  email: PropTypes.string,
+  password: PropTypes.string,
+};
+
+Login.defaultProps = {
+  email: '',
+  password: '',
+};
+
 const mapStateToProps = state => ({
-  isLoginPage: state.login.IS_LOGIN_PAGE,
-  isForgotPage: state.login.IS_FORGOT_PAGE
+  isLoginPage: state.login.isLoginPage,
+  email: state.login.email,
+  password: state.login.password,
 });
+
 const mapDispatchToProps = dispatch => bindActionCreators({
-  isLoginPage,
-  isForgotPage,
-}, dispatch)
+  toggleLoginForgotPage,
+  fillEmailText,
+  fillPasswordText,
+  postLoginFormData,
+}, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(Login)
+  mapDispatchToProps,
+)(Login);
