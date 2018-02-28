@@ -12,7 +12,7 @@ export default props => (
           aria-describedby="basic-addon2"
           value={props.text}
           onChange={props.updateSearchText}
-          onKeyPress={props.callSearchAsync}
+          onKeyPress={props.searchVideos}
         />
         <div className="input-group-append">
           <button

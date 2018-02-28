@@ -126,7 +126,7 @@ export const loadVideo = (video) => {
   };
 }
 
-export const callSearchAsync = (event) => {
+export const searchVideos = (event) => {
   return dispatch => {
     if (event.key === 'Enter') {
       callYoutubeApi(event.target.value)
