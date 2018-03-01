@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Home from '../home';
 import About from '../about';
-import Search from '../main/index';
+import Main from '../main/index';
 
 const App = (props) => {
   const navClass = 'nav-item nav-link';
@@ -38,7 +38,7 @@ const App = (props) => {
         <Route exact path="/" component={Home} />
         <Route exact path="/about-us" component={About} />
       </main>
-      <div><Route exact path="/search" component={Search} /></div>
+      <div><Route exact path="/main" component={Main} /></div>
     </div>
   );
 };
