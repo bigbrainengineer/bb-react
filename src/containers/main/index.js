@@ -7,27 +7,40 @@ import {
   updateSearchText,
   loadVideo,
   searchVideos,
+  addToPlaylist,
+  addInPlaylistAsync,
 } from '../../modules/main';
 
 
 const Main = props => (
-  <Search {...props} />
+  <div>
+    <Search {...props} />
+  </div>
 );
 
-const mapStateToProps = (state) => {
-  return ({
+const mapStateToProps = state => ({
+  search: {
     videos: state.main.search.videos,
     video: state.main.search.video,
     showLoader: state.main.search.showLoader,
     text: state.main.search.text,
-  });
-}
+  },
+  playlist: {
+    categories: state.main.playlist.categories,
+    added: state.main.playlist.added,
+    currentVideo: state.main.playlist.currentVideo,
+    showCategories: state.main.playlist.showCategories,
+    videos: state.main.playlist.videos,
+  },
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   searchAsync,
   updateSearchText,
   loadVideo,
   searchVideos,
+  addToPlaylist,
+  addInPlaylistAsync,
 }, dispatch);
 
 export default connect(
