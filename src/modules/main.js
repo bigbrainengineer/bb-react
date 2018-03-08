@@ -5,10 +5,8 @@ export const SEARCH_CHANGE = 'main/SEARCH_CHANGE';
 export const SEARCH_REQUESTED = 'main/SEARCH_REQUESTED';
 export const LOAD_VIDEO_SUCCESS = 'main/LOAD_VIDEO_SUCCESS';
 export const ADD_TO_PLAYLIST_REQUESTED = 'main/ADD_TO_PLAYLIST_REQUESTED';
-export const ADD_TO_PLAYLIST_SUCCESS = 'main/ADD_TO_PLAYLIST_SUCCESS';
 export const ADD_IN_PLAYLIST_REQUESTED = 'main/ADD_IN_PLAYLIST_REQUESTED';
 export const ADD_IN_PLAYLIST_SUCCESS = 'main/ADD_IN_PLAYLIST_SUCCESS';
-export const ADD_IN_PLAYLIST_SUCCESS_REQUESTED = 'main/ADD_IN_PLAYLIST_SUCCESS_REQUESTED';
 export const YOUTUBE_API_KEY = 'AIzaSyA4w7kvBhINrYAmuZbYb6oxC9BknMU393Q';
 export const YOUTUBE_VIDEOS_LIMIT = 20;
 
@@ -87,13 +85,6 @@ export default (state = initialState, action) => {
         ...state,
         playlist: {
           ...state.playlist,
-        },
-      }
-    case ADD_IN_PLAYLIST_SUCCESS_REQUESTED:
-      return {
-        ...state,
-        playlist: {
-          ...state.playlist,
           added: true,
         },
       }
@@ -125,10 +116,6 @@ export const addInPlaylistAsync = (video) => {
     dispatch({
       type: ADD_IN_PLAYLIST_REQUESTED,
     });
-
-    dispatch({
-      type: ADD_IN_PLAYLIST_SUCCESS_REQUESTED,
-    })
 
     setTimeout(() => {
       dispatch({
