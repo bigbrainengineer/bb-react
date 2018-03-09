@@ -4,6 +4,9 @@ export const SEARCH_SUCCESS = 'main/SEARCH_SUCCESS';
 export const SEARCH_CHANGE = 'main/SEARCH_CHANGE';
 export const SEARCH_REQUESTED = 'main/SEARCH_REQUESTED';
 export const LOAD_VIDEO_SUCCESS = 'main/LOAD_VIDEO_SUCCESS';
+export const ADD_TO_PLAYLIST_REQUESTED = 'main/ADD_TO_PLAYLIST_REQUESTED';
+export const ADD_IN_PLAYLIST_REQUESTED = 'main/ADD_IN_PLAYLIST_REQUESTED';
+export const ADD_IN_PLAYLIST_SUCCESS = 'main/ADD_IN_PLAYLIST_SUCCESS';
 export const YOUTUBE_API_KEY = 'AIzaSyA4w7kvBhINrYAmuZbYb6oxC9BknMU393Q';
 export const YOUTUBE_VIDEOS_LIMIT = 20;
 
@@ -14,7 +17,18 @@ const initialState = {
     video: null,
     showLoader: false,
   },
-}
+  playlist: {
+    categories: [
+      {name: 'rock'},
+      {name: 'jazz'},
+      {name: 'blues'},
+    ],
+    showCategories: false,
+    added: false,
+    currentVideo: null,
+    videos: [],
+  },
+};
 
 
 export default (state = initialState, action) => {
@@ -53,12 +67,64 @@ export default (state = initialState, action) => {
           video: action.video,
           showLoader: false,
         },
+        playlist: {
+          ...state.playlist,
+          showCategories: false,
+        },
+      }
+    case ADD_TO_PLAYLIST_REQUESTED:
+      return {
+        ...state,
+        playlist: {
+          ...state.playlist,
+          showCategories: true,
+        },
+      }
+    case ADD_IN_PLAYLIST_REQUESTED:
+      return {
+        ...state,
+        playlist: {
+          ...state.playlist,
+          added: true,
+        },
+      }
+    case ADD_IN_PLAYLIST_SUCCESS:
+      return {
+        ...state,
+        playlist: {
+          ...state.playlist,
+          added: false,
+          videos: [...state.playlist.videos, action.video],
+        },
       }
 
     default:
       return state;
   }
 };
+
+export const addToPlaylist = () => {
+  return dispatch => {
+    dispatch({
+      type: ADD_TO_PLAYLIST_REQUESTED,
+    });
+  };
+}
+
+export const addInPlaylistAsync = (video) => {
+  return dispatch => {
+    dispatch({
+      type: ADD_IN_PLAYLIST_REQUESTED,
+    });
+
+    setTimeout(() => {
+      dispatch({
+        type: ADD_IN_PLAYLIST_SUCCESS,
+        video: video,
+      });
+    }, 1000);
+  };
+}
 
 export const callYoutubeApi = (text) => {
   const URL_START = 'https://www.googleapis.com/youtube/v3/search?key';
